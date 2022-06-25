@@ -1,0 +1,43 @@
+{
+   "data": [
+      {
+         "id": "test",
+         "name": "test",
+         "args": "",
+         "date_created": 0,
+         "local_results_path": "",
+         "local_snapshot_path": "the/snapshot/path",
+         "date_saved": null,
+         "metrics": [{"entry_id": "test", "name": "f1", "value": 0.87}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}, {"entry_id": "test", "name": "loss", "value": 0.003}],
+         "other_runs": [],
+         "results": [{"entry_id": "test", "name": "with_svm", "path": "/the/result/path"}, {"entry_id": "test", "name": "with_svm", "path": "/a/very/very/very/very/very/long/path"}, {"entry_id": "test", "name": "with_svm", "path": "/the/result/path"}, {"entry_id": "test", "name": "with_svm", "path": "/the/result/path"}, {"entry_id": "test", "name": "with_svm", "path": "/the/result/path"}, {"entry_id": "test", "name": "with_svm", "path": "/the/result/path"}, {"entry_id": "test", "name": "with_svm", "path": "/the/result/path"}],
+         "__json_id": 129795584637029373
+      },
+      {
+         "id": "test1",
+         "name": "test",
+         "args": "",
+         "date_created": 0,
+         "local_results_path": "",
+         "local_snapshot_path": "",
+         "date_saved": null,
+         "metrics": [],
+         "other_runs": [],
+         "results": [],
+         "__json_id": 134338341121249408
+      },
+      {
+         "id": "test2",
+         "name": "test",
+         "args": "",
+         "date_created": 0,
+         "local_results_path": "",
+         "local_snapshot_path": "",
+         "date_saved": null,
+         "metrics": [],
+         "other_runs": [],
+         "results": [],
+         "__json_id": 125768927186746703
+      }
+   ]
+}

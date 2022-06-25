@@ -1,0 +1,8 @@
+.idea
+.vscode
+dist
+*egg-info
+*/**/__pycache__
+pyproject.toml
+examples/.tmt
+*/**/*.lock

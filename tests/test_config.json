@@ -1,0 +1,9 @@
+{
+    "tmt_dir": "tests",
+    "snapshot_source": "tests/fake_project",
+    "snapshot_target": "snapshot_test",
+    "last_snapshot_link": "snapshot_test/last",
+    "gitignore_path": "tests/.gitignore", 
+    "json_db_path": "test_db.json",
+    "results_path": "test_results"
+}

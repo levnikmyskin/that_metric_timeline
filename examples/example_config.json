@@ -1,0 +1,18 @@
+{
+    "__commenttmtdir": "tmt_dir specifies the path where code snapshots and results will be saved. You may specify an absolute path as well.",
+    "tmt_dir": ".example",
+    "snapshot_source": ".",  
+
+    "__commenttarget": "snapshot_target is where code snapshots will be saved. It will be joined with tmt_dir. So in this case the target will be .examples/snapshot_example.",
+    "snapshot_target": "snapshot_example",
+
+    "__comment_link": "this path will be a sym link to the last snapshot taken. Same rules as for snapshot_target apply",
+    "last_snapshot_link": "snapshot_example/last",
+
+    "__comment_gitignore": "this can be any gitignore-like file, or just empty if you don't want to ignore anything",
+    "gitignore_path": "", 
+
+    "__comment_json_result": "the two paths below are for the db and the results directory, respectively. Same rules apply as for snapshot_target, so path will be .example/example_db.json",
+    "json_db_path": "example_db.json",
+    "results_path": "example_results"
+}
