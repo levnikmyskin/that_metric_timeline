@@ -67,13 +67,13 @@ You can access the TUI by typing:
 tmt_tui
 ```
 You will be presented with the following old-fashioned interface (who doesn't love the 90s?):
-![main_tui](assets/main_tui.png)
+![main_tui](.github/assets/main_tui.png)
 
 You can move around with the arrow (or the tab and shift+tab) keys. You can then search by name in this interface:
-![search_tui](assets/search_tui.png)
+![search_tui](.github/assets/search_tui.png)
 
 Once you select an experiment you can see some details about it:
-![experiment_tui](assets/experiment_tui.png)
+![experiment_tui](.github/assets/experiment_tui.png)
 
 The __Search experiment by date__ functionality is not implemented yet and will come in a future release. You can however use the `TmtManager` (see the next section).
 
