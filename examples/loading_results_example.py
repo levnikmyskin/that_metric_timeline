@@ -12,7 +12,7 @@ if __name__ == '__main__':
     manager = TmtManager()
 
     # otherwise, use 
-    manager = TmtManager('example_config.json')
+    manager = TmtManager(config='example_config.json')
 
     # An Entry is a row in the database, i.e. an experiment that was tracked.
     manager.set_entry_by_id('example')  # This will fail in this case since there is no such entry in the database

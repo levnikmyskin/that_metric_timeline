@@ -173,7 +173,7 @@ def with_custom_config():
 ```
 And when managing experiments:
 ```python
-manager = TmtManager('/config/path/config.json')
+manager = TmtManager(config='/config/path/config.json')
 # do your stuff
 ```
 
