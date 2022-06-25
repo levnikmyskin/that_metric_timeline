@@ -93,7 +93,8 @@ manager.set_entry_by_id('example')
 # load the results and unpickle them
 for name, path in manager.results_paths():
     with open(path, 'rb') as f:
-        # do stuff with your results. If it's a pickle it's more convenient to use the code block below this one
+        # do stuff with your results. If it's a pickle it's 
+        # more convenient to use the code block below this one
         res = pickle.load(f)
 
 # load the unpickled results
@@ -130,19 +131,31 @@ To do so, create a `config.json` file: if you're fine with using the `cwd/.tmt` 
 The configuration file has the following structure
 ```json
 {
-    // tmt_dir specifies the path where code snapshots and results will be saved. You may use an absolute path as well
+    // tmt_dir specifies the path where code snapshots and 
+    // results will be saved. You may use an absolute 
+    // path as well
     "tmt_dir": ".example",
-    "snapshot_source": ".", // this is the folder we will take a snapshot of for every experiment  
 
-    // snapshot_target is where code snapshots will be saved. It will be joined with tmt_dir. So in this case the target will be .examples/snapshot_example
+    // this is the folder we will take a snapshot of 
+    // for every experiment  
+    "snapshot_source": ".", 
+
+    // snapshot_target is where code snapshots will be 
+    // saved. It will be joined with tmt_dir. So in this 
+    // case the target will be .examples/snapshot_example
     "snapshot_target": "snapshot_example",
 
-    // this path will be a symlink to the last snapshot taken. Same rules as for snapshot_target apply
+    // this path will be a symlink to the last snapshot
+    // taken. Same rules as for snapshot_target apply
     "last_snapshot_link": "snapshot_example/last",
-    // this might actually be any file with a .gitignore syntax. These files will be ignored and not backupped
+
+    // this might actually be any file with a .gitignore 
+    // syntax. These files will be ignored and not backupped
     "gitignore_path": "path/to/.gitignore",
 
-    // the two paths below are for the db and the results directory, respectively. Same rules apply as for snapshot_target, so path will be .example/tmt_db.json
+    // the two paths below are for the db and the results
+    // directory, respectively. Same rules apply as for 
+    // snapshot_target, so path will be .example/tmt_db.json
     "json_db_path": "tmt_db.json",
     "results_path": "results"
 }
