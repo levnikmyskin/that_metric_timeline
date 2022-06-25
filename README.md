@@ -11,7 +11,7 @@ This library can hopefully be a solution to all of this :)
 ## Installation
 The library is available on PyPI, and can be installed with
 ```
-pip install [LINK]
+pip install ThatMetricTimeline
 ```
 After a successful installation, a binary `tmt_tui` will be available in your path. This is the library terminal user interface (TUI). More on this [later](#tui).
 ### Note
