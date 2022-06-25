@@ -12,11 +12,11 @@ def recorder(name: str, config_path: Optional[str] = None, save_on_exception=Fal
             context_manager.set(cm)
             db_manager = DbManager(cm.config.json_db_path)
             try:
-                cm.snap_manager.make_snapshot()
                 metrics = func(*args, **kwargs)
                 if metrics:
                     for k, v in metrics.items():
                         cm.entry.metrics.append(Metric(cm.entry.id, k, v))
+                cm.snap_manager.make_snapshot()
                 cm.entry.date_saved = int(datetime.now().timestamp())
                 db_manager.add_new_entries([cm.entry])
                 return metrics

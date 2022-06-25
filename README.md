@@ -23,7 +23,7 @@ The library is currently in its first development stages. Everything should work
  * Create a `.tmt/tmt_db.json` file which will be used as a database;  
  * Create a `.tmt/snapshots` directory, where code snapshot backups will be saved. A symlink `.tmt/snapshots/last` will also be created and will always point to the last snapshot taken. See the [Snapshots](#snapshots) section for more details.
 
-Should you want to change where all of this is saved, check the [Custom configuration](#custom-configuration).  
+Should you want to change where all of this is saved, check the [Custom configuration](#custom-configuration) section.  
 Code examples are provided in the `examples` folder in this repository. More examples will be added in the future.
 
 [^1]: Code backup is taken as a "snapshot". It means that the first time it will be a standard copy of all your files (you can provide a `.gitignore` file to ignore files). The following backups will only copy new and changed files, while everything else is copied as a hard-link (therefore not occupying space on your disk).
