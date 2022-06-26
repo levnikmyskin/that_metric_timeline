@@ -6,8 +6,8 @@ from datetime import datetime
 
 
 def recorder(name: str, config_path: Optional[str] = None, save_on_exception=False):
-    def inner(func: Callable[..., Dict[str, float]]):
-        def wrapper(*args, **kwargs):
+    def inner(func: Callable[..., Optional[Dict[str, float]]]):
+        def wrapper(*args, **kwargs) -> Optional[Dict[str, float]]:
             cm = ContextManager(name, config_path)
             context_manager.set(cm)
             db_manager = DbManager(cm.config.json_db_path)
