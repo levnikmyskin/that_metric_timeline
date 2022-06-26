@@ -23,6 +23,7 @@ def recorder(name: str, config_path: Optional[str] = None, save_on_exception=Fal
             except Exception as e:
                 if not save_on_exception:
                     raise e
+                cm.snap_manager.make_snapshot()
                 cm.entry.date_saved = int(datetime.now().timestamp())
                 db_manager.add_new_entries([cm.entry])
             
