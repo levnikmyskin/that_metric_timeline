@@ -9,6 +9,12 @@ CONFIG_PATH = '.tmt/config.json'
 
 @dataclass
 class Configs(BaseJsonDataclass):
+    """
+    This dataclass holds the `tmt` configuration options. Users should not mind about this class, since this is 
+    used internally by other `tmt` functions such as :py:func:`tmt.decorators.recorder.recorder` or :py:class:`tmt.utils.manager.TmtManager`. When instantiated with :py:func:`tmt.configs.parser.Configs.from_default_path_or_default_config()`, it will look
+    for a json configuration file in the default path `.tmt/config.json`.
+    If none is found, it will create `tmt` default configuration. See :ref:`Configuration <configuration>`.
+    """
     tmt_dir: str
     snapshot_source: str
     snapshot_target: str

@@ -6,3 +6,4 @@ dist
 pyproject.toml
 examples/.tmt
 */**/*.lock
+docs/build
