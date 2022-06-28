@@ -1,4 +1,6 @@
 # That Metric Timeline (TMT) ⌚
+[![Documentation Status](https://readthedocs.org/projects/thatmetrictimeline/badge/?version=latest)](https://thatmetrictimeline.readthedocs.io/en/latest/?badge=latest) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 That Metric Timeline (TMT) is a Python library aimed at the machine/deep learning practitioner/researcher. This library aims to:  
   * Help the user to keep track of experiments, their metrics, their results and the code used to produce them;  
   * Provide an easy-to-use and [KISS](https://en.wikipedia.org/wiki/KISS_principle) based library to the user;  
@@ -8,14 +10,14 @@ That Metric Timeline (TMT) is a Python library aimed at the machine/deep learnin
 So many times when working on a research project I've seen the number of experiments skyrocketing in the blink of an eye...and then when we come back to our project after "some time off", we may have lost track of where the results are, what was the code that produced them and so on.  
 This library can hopefully be a solution to all of this :)
 
+Read the full documentation on [ReadTheDocs](https://thatmetrictimeline.readthedocs.io/en/latest/).
+
 ## Installation
 The library is available on PyPI, and can be installed with
 ```
 pip install ThatMetricTimeline
 ```
 After a successful installation, a binary `tmt_tui` will be available in your path. This is the library terminal user interface (TUI). More on this [later](#tui).
-### Note
-The library is currently in its first development stages. Everything should work (please, open an issue if something doesn't) but documentation is lacking (this README is basically the only documentation there is at the moment).
 
 ## Usage
 `tmt` can keep track of your experiments. Every experiment will be saved as an entry in a json database, with results and code snapshot backups[^1] saved in different folders. By default, `tmt` will:  
