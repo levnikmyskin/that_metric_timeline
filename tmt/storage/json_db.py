@@ -8,17 +8,18 @@ import warnings
 
 
 class DbManager:
+    """
+    Class to interact with the underlying json database. If `read_only` is `True`, all operations
+    which add and/or modify the database won't be allowed.
+
+    :param db_path: path to the json db file .
+    :type db_path: str
+    :param read_only: if `True` all writing access is denied, defaults to False.
+    :type read_only: bool, optional
+    """
 
     def __init__(self, db_path: str, read_only=False):
-        """
-        Class to interact with the underlying json database. If `read_only` is `True`, all operations
-        which add and/or modify the database won't be allowed.
 
-        :param db_path: path to the json db file 
-        :type db_path: str
-        :param read_only: if `True` all writing access is denied, defaults to False
-        :type read_only: bool, optional
-        """
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
         self.db = db.getDb(db_path)
         self.db._id_fieldname = '__json_id'

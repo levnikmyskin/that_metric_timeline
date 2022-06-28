@@ -63,9 +63,17 @@ As you can see, we give a name to the saved object as well. This should make it 
 ### Searching and looking at experiments
 `tmt` offers a terminal user interface (TUI) which should be installed in your path when you `pip install` the library.
 You can access the TUI by typing:
+
 ```
 tmt_tui
 ```
+
+If you're using a custom configuration (see [Custom configuration](#custom-configuration)), specify it like this:
+
+```
+tmt_tui -c /path/to/your/config.json
+```
+
 You will be presented with the following old-fashioned interface (who doesn't love the 90s?):
 ![main_tui](.github/assets/main_tui.png)
 
@@ -109,17 +117,17 @@ for name, val in manager.get_metrics():
 ```
 Should you need it, you can access the "low level" database manager from the `manager.db` member.
 ```python
-    # If you need to do other stuff, like searching for 
-    # experiments between two datetimes and so on
-    # you can access the `db` member like
-    manager.db.get_entries_greater_than_date(date_or_timestamp)
+# If you need to do other stuff, like searching for 
+# experiments between two datetimes and so on
+# you can access the `db` member like
+manager.db.get_entries_greater_than_date(date_or_timestamp)
 ```
 
 ## Snapshots
 Every time you track an experiment with `tmt_recorder`, a code snapshot backup will be saved (by default in `.tmt/snapshots`). This means that:  
  * the first time you use the library in your project, a simple copy of your project is made (by default, this is the current working directory (_cwd_) from which you launch the experiment);  
  * subsequent backups will only copy new and different files, while hard-linking all other files. This limits the space taken on your disk;  
- * by default, the library will look for a `.gitignore` file in your _cwd_ and ignore (i.e., not copy) all files listed in there (the [PathSpec](https://python-path-specification.readthedocs.io/en/latest/readme.html) library is used for gitignore parsing);
+ * by default, the library will look for a `.gitignore` file in your _cwd_ and ignore (i.e., not copy) all files listed in there (the [PathSpec](https://python-path-specification.readthedocs.io/en/latest/readme.html) library is used for gitignore parsing;
  * a symlink pointing to the last snapshot taken is created (and updated everytime) in `.tmt/snapshots/last`.  
 
 You can change the default paths by using a [Custom configuration](#custom-configuration) file.
