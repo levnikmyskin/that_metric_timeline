@@ -89,6 +89,10 @@ You can move around with the arrow (or the tab and shift+tab) keys. You can then
 
 .. image:: ../../.github/assets/search_tui.png
 
+.. note:: 
+
+    Since version 0.1.7, you can also use a regex pattern.
+
 Once you select an experiment you can see some details about it:
 
 .. image:: ../../.github/assets/experiment_tui.png

@@ -15,7 +15,7 @@
       },
       {
          "id": "test1",
-         "name": "test",
+         "name": "test1",
          "args": "",
          "date_created": 0,
          "local_results_path": "",
@@ -28,7 +28,7 @@
       },
       {
          "id": "test2",
-         "name": "test",
+         "name": "test2",
          "args": "",
          "date_created": 0,
          "local_results_path": "",

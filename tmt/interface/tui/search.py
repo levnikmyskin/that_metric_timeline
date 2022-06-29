@@ -51,7 +51,11 @@ class SearchLayout(BaseApp):
         return self.__search_layout()
 
     def search_by_name(self, buffer: Buffer):
-        entries = self.db.get_entries_by_name(buffer.text)
+        try:
+            entries = self.db.get_entries_by_name_regex(buffer.text)
+        except:
+            entries = []
+
         if buffer.text == '' or len(entries) == 0:
             self.__clear_results()
             return

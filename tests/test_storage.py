@@ -66,3 +66,7 @@ class TestSchema(unittest.TestCase):
         entry = Entry('test', 'test', '', 0, '', '')
         db.add_new_entries([entry])
         self.assertTrue(db.delete_entry(entry))
+
+    def test_search_by_regex(self):
+        db = DbManager('tests/test_db_tui.json', read_only=True)
+        self.assertGreater(len(db.get_entries_by_name_regex(r'test\d')), 0)

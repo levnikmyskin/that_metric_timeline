@@ -36,3 +36,6 @@ if __name__ == '__main__':
     # experiments between two datetimes and so on
     # you can access the `db` member like
     manager.db.get_entries_greater_than_date(date_or_timestamp)
+
+    # Since version 0.1.7 you can also search names by regex
+    manager.db.get_entries_by_name_regex(r'experiment\d+')

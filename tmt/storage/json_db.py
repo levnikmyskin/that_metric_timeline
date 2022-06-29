@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import json
 import warnings
+import re
 
 
 class DbManager:
@@ -64,6 +65,13 @@ class DbManager:
             with open(self.db.filename, 'r', encoding='utf-8') as f:
                 db_data = json.load(f)
             return list(map(Entry.from_dict, filter(lambda d: name in d['name'], db_data['data'])))
+
+    def get_entries_by_name_regex(self, regex: str) -> List[Entry]:
+        with self.db.lock:
+            with open(self.db.filename, 'r', encoding='utf-8') as f:
+                db_data = json.load(f)
+            pattern = re.compile(regex)
+            return list(map(Entry.from_dict, filter(lambda d: pattern.match(d['name']), db_data['data'])))
 
     def get_entries_between_dates(self, first: Union[datetime, int], second: Union[datetime, int]) -> List[Entry]:
         with self.db.lock:

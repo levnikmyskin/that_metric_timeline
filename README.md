@@ -79,7 +79,7 @@ tmt_tui -c /path/to/your/config.json
 You will be presented with the following old-fashioned interface (who doesn't love the 90s?):
 ![main_tui](.github/assets/main_tui.png)
 
-You can move around with the arrow (or the tab and shift+tab) keys. You can then search by name in this interface:
+You can move around with the arrow (or the tab and shift+tab) keys. You can then search by name (supports regex!) in this interface:
 ![search_tui](.github/assets/search_tui.png)
 
 Once you select an experiment you can see some details about it:
@@ -117,12 +117,16 @@ for name, res in manager.load_results():
 for name, val in manager.get_metrics():
     print(f"{name}: {val}")
 ```
+
 Should you need it, you can access the "low level" database manager from the `manager.db` member.
 ```python
 # If you need to do other stuff, like searching for 
 # experiments between two datetimes and so on
 # you can access the `db` member like
 manager.db.get_entries_greater_than_date(date_or_timestamp)
+
+# You can also search names with a regex
+manager.db.get_entries_by_name_regex(r'experiment\d+')
 ```
 
 ## Snapshots

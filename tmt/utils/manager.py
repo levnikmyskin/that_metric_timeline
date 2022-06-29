@@ -50,7 +50,7 @@ class TmtManager:
 
     :param entry: this is an entry in the json database, i.e. a previously tracked and saved experiments.
     :type entry: Optional[Entry]
-    :param config: this can be a path to a custom configuration json file. See :ref:`Configuration <configuration>`.
+    :param config: this can be a path to a custom configuration json file. See :doc:`Configuration <configuration>`.
     :type config: Optional[str]
     """
 
