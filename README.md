@@ -1,5 +1,5 @@
 # That Metric Timeline (TMT) ⌚
-[![Documentation Status](https://readthedocs.org/projects/thatmetrictimeline/badge/?version=latest)](https://thatmetrictimeline.readthedocs.io/en/latest/?badge=latest) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/levnikmyskin/that_metric_timeline)
+[![Documentation Status](https://readthedocs.org/projects/thatmetrictimeline/badge/?version=latest)](https://thatmetrictimeline.readthedocs.io/en/latest/?badge=latest) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/levnikmyskin/that_metric_timeline) [![DOI](https://zenodo.org/badge/507277225.svg)](https://zenodo.org/badge/latestdoi/507277225)
 
 That Metric Timeline (TMT) is a Python library aimed at the machine/deep learning practitioner/researcher. This library aims to:  
   * Help the user to keep track of experiments, their metrics, their results and the code used to produce them;  
