@@ -8,8 +8,8 @@ def save(obj: Any, name: str, allow_exist=False, extension='.pkl') -> str:
     It must be called by a function decorated with :py:func:`tmt.decorators.recorder.recorder` (or within code called from that function).
 
     .. note::
-        For simplicity, `tmt` exposes this function from its root with the `tmt_save` name. You can import it with `from tmt import 
-        tmt_save`
+        For simplicity, ``tmt`` exposes this function from its root with the ``tmt_save`` name. You can import it with ``from tmt import 
+        tmt_save``
 
     What this function does is not too far from simply doing:
 
@@ -43,11 +43,12 @@ def save(obj: Any, name: str, allow_exist=False, extension='.pkl') -> str:
     :param extension: the extension to save the file with, defaults to '.pkl'.
     :type extension: str, optional
     :raises ValueError: this is raised if the function is illegaly called outside a function decorated with :py:func:`tmt.decorators.recorder.recorder`
-    :raises tmt.exceptions.DuplicatedNameError: if `name` already exists and `allow_exist` is False, this exception will be raised.
-    :return: the path where the object was saved. `tmt` will take care of storing it, so you can ignore this return value.
+    :raises tmt.exceptions.DuplicatedNameError: if ``name`` already exists and ``allow_exist`` is False, this exception will be raised.
+    :return: the path where the object was saved. ``tmt`` will take care of storing it, so you can ignore this return value.
     :rtype: str
     """
     context = context_manager.get()
     if context is None:
         raise ValueError("`save` function was called before initializing the context. Did you use a tmt decorator/class?")
     return context.save(obj, name, allow_exist, extension)
+

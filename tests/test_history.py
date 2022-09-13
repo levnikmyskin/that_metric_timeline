@@ -1,6 +1,5 @@
 from tmt.history.snapshot import *
 import unittest
-import glob
 
 
 class TestHistory(unittest.TestCase):
@@ -71,7 +70,6 @@ class TestHistory(unittest.TestCase):
         self.setUp()
         self.snap.ignore_path = ''
         self.test_make_snapshot_with_diff()
-        
 
     def __assert_no_diff(self):
         cmp = dircmp(self.snap.snapshot_source, self.snap.snapshot_dest)

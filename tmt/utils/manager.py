@@ -63,13 +63,13 @@ class TmtManager:
         self.entry = entry
 
     def set_entry_by_name(self, name: str) -> Entry:
-        if (e := self.db.get_entry_by_exact_name(name)):
+        if e := self.db.get_entry_by_exact_name(name):
             self.entry = e
             return self.entry
         raise EntryNotFound(f'No entry (experiment) found for name {name}')
 
     def set_entry_by_id(self, id: str) -> Entry:
-        if (e := self.db.get_entry_by_id(id)):
+        if e := self.db.get_entry_by_id(id):
             self.entry = e
             return self.entry
         raise EntryNotFound(f'No entry (experiment) found for id {id}')
@@ -86,10 +86,13 @@ class TmtManager:
         Creates a generator which yields a tuple with the name of the results (see :py:func:`tmt.history.utils.save`)
         and the unpickled object. See also :py:func:`tmt.utils.manager.TmtManager.results_paths` if you just want the paths.
 
+        .. note::
+            If there are sub-entries (see :py:mod:`tmt.utils.duplicates`), their results will be returned as well.
+
         :yield: A tuple with (name, object) of each result stored with this experiment.
         :rtype: Generator[Tuple[str, Any], None, None]
         """
-        for result in self.entry.results:
+        for result in self.__entry_results(self.entry):
             with open(result.path, 'rb') as f:
                 yield result.name, pickle.load(f)
 
@@ -102,7 +105,7 @@ class TmtManager:
         :yield: A tuple with (name, path) of each result stored with this experiment.
         :rtype: Generator[Tuple[str, str], None, None]
         """
-        for result in self.entry.results:
+        for result in self.__entry_results(self.entry):
             yield result.name, result.path
 
     @entry_not_none
@@ -118,3 +121,10 @@ class TmtManager:
         :rtype: str
         """
         return self.entry.local_snapshot_path
+
+    @staticmethod
+    def __entry_results(entry: Entry):
+        # We don't go recursive, since only "main" parent entries can have other entries attached
+        yield from entry.results
+        for e in entry.other_runs:
+            yield from e.results

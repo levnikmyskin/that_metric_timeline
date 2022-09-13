@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 CONFIG_PATH = '.tmt/config.json'
 
+
 @dataclass
 class Configs(BaseJsonDataclass):
     """
@@ -20,10 +21,10 @@ class Configs(BaseJsonDataclass):
     snapshot_target: str
     last_snapshot_link: str
     gitignore_path: str
-    json_db_path: str 
-    results_path: str 
+    json_db_path: str
+    results_path: str
 
-    @classmethod 
+    @classmethod
     def from_dict(cls, d):
         config = super().from_dict(d)
         config.snapshot_target = os.path.join(config.tmt_dir, config.snapshot_target)
