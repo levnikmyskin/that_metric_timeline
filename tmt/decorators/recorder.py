@@ -5,14 +5,14 @@ from tmt.storage.schema import Metric
 from datetime import datetime
 
 
-def recorder(name: str, config_path: Optional[str] = None, save_on_exception=False):
+def recorder(name: str, config_path: Optional[str] = None, save_on_exception=False, allow_duplicate_names=False):
     """
-    One of the main `tmt` functions. This is a decorator which can be used to keep track of 
+    One of the main ``tmt`` functions. This is a decorator which can be used to keep track of 
     experiments, saving metrics, results and taking a snapshot of the code at this moment in time.
 
     .. note::
-        For simplicity, `tmt` exposes this function from its root, with the `tmt_recorder` name. This is the 
-        recommended way of importing this function, i.e. `from tmt import tmt_recorder`.
+        For simplicity, ``tmt`` exposes this function from its root, with the ``tmt_recorder`` name. This is the 
+        recommended way of importing this function, i.e. ``from tmt import tmt_recorder``.
 
     **Usage**:
 
@@ -33,10 +33,12 @@ def recorder(name: str, config_path: Optional[str] = None, save_on_exception=Fal
     :type config_path: Optional[str], optional
     :param save_on_exception: save everything (snapshot, metrics etc.) even if an exception happens. Defaults to False.
     :type save_on_exception: bool, optional
+    :param allow_duplicate_names: if ``True``, allow to save this experiment with name ``name`` even if a previous experiment with this name exists
+    :type allow_duplicate_names: bool, optional
     """
     def inner(func: Callable[..., Optional[Dict[str, float]]]):
         def wrapper(*args, **kwargs) -> Optional[Dict[str, float]]:
-            cm = ContextManager(name, config_path)
+            cm = ContextManager(name, config_path, allow_duplicate_names=allow_duplicate_names)
             context_manager.set(cm)
             db_manager = DbManager(cm.config.json_db_path)
             try:

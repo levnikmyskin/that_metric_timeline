@@ -12,7 +12,7 @@ import pickle
 returned_metrics = {'f1': 0.87, 'acc': 0.45, 'loss': 1e-4}
 
 
-@tmt_recorder('test_exp', config_path='tests/test_config.json')
+@tmt_recorder('test_exp', config_path='tests/test_config.json', allow_duplicate_names=True)
 def decorated_fn(_):
     # do something
     save(returned_metrics, name='test_metrics')
@@ -52,3 +52,7 @@ class TestDecorators(unittest.TestCase):
             self.assertEqual(pickle.load(f), returned_metrics)
         self.assertTrue(len(entry.results) > 0)
         self.assertRaises(DuplicatedNameError, ContextManager, 'test_exp', 'tests/test_config.json', allow_duplicate_names=False)
+
+    def test_duplicate_names(self):
+        _ = decorated_fn(None)
+        self.assertRaises(DuplicatedNameError, decorated_fn, None, None)
