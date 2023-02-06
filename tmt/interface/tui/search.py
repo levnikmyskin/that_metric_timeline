@@ -82,7 +82,6 @@ class SearchLayout(BaseApp):
             names.children.append(to_container(Label(text=entry.name)))
             dates.children.append(to_container(Label(text=date_formatter(entry.date_created))))
 
-
     def _bottom_toolbar(self):
         toolbar = super()._bottom_toolbar()
         toolbar.children.insert(0, to_container(Button('back', handler=self.back_handler)))

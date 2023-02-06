@@ -88,6 +88,7 @@ class Entry(BaseJsonDataclass):
     date_created: Timestamp
     local_results_path: str
     local_snapshot_path: str = ""
+    description: str = ""
     date_saved: Optional[Timestamp] = None
     metrics: List[Metric] = field(default_factory=list)
     other_runs: List[Entry] = field(default_factory=list)

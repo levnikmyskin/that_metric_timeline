@@ -25,6 +25,7 @@ class EntryDisplay(BaseApp):
         keys = HSplit([
             Label(text='ID:', dont_extend_width=True),
             Label(text='Name:', dont_extend_width=True),
+            Label(text='Description:', dont_extend_width=True),
             Label(text='Args:', dont_extend_width=True),        
             Label(text='Date created:', dont_extend_width=True),
             Label(text='Metrics:', dont_extend_width=True),
@@ -32,6 +33,13 @@ class EntryDisplay(BaseApp):
             Label(text='Code snapshot path <enter to copy>:', dont_extend_width=True),
             Label(text='Date saved:', dont_extend_width=True)
         ], padding=1)
+        if self.entry.description:
+            ft_description = FocusableText(text=f'{self.entry.description[:20]}...<enter> to expand', handler=None)
+            descr_float = FloatContainer(content=ft_description, floats=[])
+            ft_description.set_handler(partial(self._on_descr_expand, descr_float))
+        else:
+            descr_float = Label(text="NA")
+
         ft_metric = FocusableText(text='<enter> to expand', handler=None)
         metric_float = FloatContainer(content=ft_metric, floats=[])
         ft_metric.set_handler(partial(self._on_metric_expand, metric_float))
@@ -42,6 +50,7 @@ class EntryDisplay(BaseApp):
         vals = HSplit([
             Label(text=self.entry.id, dont_extend_width=True),
             Label(text=self.entry.name, dont_extend_width=True),
+            descr_float,
             Label(text=f'{self.entry.args or "NA"}', dont_extend_width=True),
             Label(text=date_formatter(float(self.entry.date_created)), dont_extend_width=True),
             metric_float,
@@ -51,20 +60,21 @@ class EntryDisplay(BaseApp):
         ], padding=1)
         return Box(VSplit([keys, vals], padding=5))
 
+    def _on_descr_expand(self, descr_float):
+        container = HSplit([Label(self.entry.description or "No description"),
+                            FocusableText('<close>', handler=partial(self._on_float_close, descr_float))])
+        descr_float.floats = [Float(Shadow(Frame(ScrollablePane(container))), top=0, width=40, height=20)]
+
     def _on_metric_expand(self, metric_float):
         metric_float.floats = [Float(Shadow(Frame(ScrollablePane(self._metric_layout(metric_float)))), top=0, width=20, height=10)]
         get_app().layout.focus(metric_float)
 
-    def _on_metric_close(self, metric_float):
-        metric_float.floats = []
-        get_app().layout.focus(metric_float)
+    def _on_float_close(self, float_obj):
+        float_obj.floats = []
+        get_app().layout.focus(float_obj)
 
     def _on_results_expand(self, results_float):
         results_float.floats = [Float(Shadow(Frame(ScrollablePane(self._results_layout(results_float)))), left=0, width=40, height=10)]
-        get_app().layout.focus(results_float)
-
-    def _on_results_close(self, results_float):
-        results_float.floats = []
         get_app().layout.focus(results_float)
 
     def _metric_layout(self, metric_float):
@@ -75,7 +85,7 @@ class EntryDisplay(BaseApp):
         for metric in self.entry.metrics:
             keys.append(FocusableText(text=f'{metric.name.capitalize()}:'))
             vals.append(Window(content=FormattedTextControl(text=f'{metric.value:.5f}'), wrap_lines=True))
-        return self._expandable_layout(keys, vals, metric_float, self._on_metric_close)
+        return self._expandable_layout(keys, vals, metric_float, self._on_float_close)
 
     def _results_layout(self, results_float):
         keys = []
@@ -87,7 +97,7 @@ class EntryDisplay(BaseApp):
         for res in self.entry.results:
             keys.append(FocusableText(text=f'{res.name.capitalize()} path:', handler=lambda: PyperclipClipboard().set_text(res.path)))
             vals.append(Window(content=FormattedTextControl(text=res.path), wrap_lines=True))
-        return self._expandable_layout(keys, vals, results_float, self._on_results_close)
+        return self._expandable_layout(keys, vals, results_float, self._on_float_close)
 
     def _expandable_layout(self, keys, vals, floating, handler):
         return HSplit([VSplit([HSplit(keys, padding=1), HSplit(vals, padding=1)], padding=1), FocusableText('<close>', handler=partial(handler, floating))], padding=3)

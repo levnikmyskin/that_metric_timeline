@@ -50,11 +50,37 @@ class TestSchema(BaseTest):
         d['other_runs'] = [copy.deepcopy(d)]
         Entry.from_json(json.dumps(d))
 
+    def test_add_entry(self):
+        db = DbManager(self.conf.json_db_path)
+        entry = Entry(id='21jf10jf', name='asdf', args='asdf', date_created=Timestamp(0), local_results_path='')
+        db.add_new_entries([entry])
+        with open(db.db_path, 'r') as f:
+            data = json.load(f)['data']
+            for d in data:
+                if d['id'] == entry.id:
+                    return
+        self.fail('Data was not added')
+
     def test_delete_entry(self):
         db = DbManager(self.conf.json_db_path)
-        entry = Entry('test', 'test', '', 0, '', '')
+        entry = Entry(id='21jf10jf', name='asdf', args='asdf', date_created=Timestamp(0), local_results_path='')
         db.add_new_entries([entry])
         self.assertTrue(db.delete_entry(entry))
+        with open(db.db_path, 'r') as f:
+            data = json.load(f)['data']
+            for d in data:
+                self.assertFalse(d['id'] == entry.id)
+
+    def test_update_entry(self):
+        db = DbManager(self.conf.json_db_path)
+        entry = Entry(id='21jf10jf', name='asdf', args='asdf', date_created=Timestamp(0), local_results_path='')
+        db.add_new_entries([entry])
+        entry.name = 'updated'
+        db.update_entries([entry])
+        with open(db.db_path, 'r') as f:
+            data = json.load(f)['data']
+            d = next(filter(lambda d: d['id'] == entry.id, data))
+            self.assertEqual(d['name'], entry.name)
 
     def test_search_by_regex(self):
         db = DbManager('tests/test_db_tui.json', read_only=True)

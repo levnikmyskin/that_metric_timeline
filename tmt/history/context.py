@@ -18,7 +18,7 @@ context_manager: ContextVar[ContextManager] = ContextVar('context_manager', defa
 
 
 class ContextManager:
-    def __init__(self, name: str, config_path: Optional[str] = None, duplicate_strategy=DuplicateStrategy()):
+    def __init__(self, name: str, config_path: Optional[str] = None, duplicate_strategy=DuplicateStrategy(), description=""):
         if config_path:
             self.config = Configs.from_config(config_path)
         else:
@@ -26,6 +26,7 @@ class ContextManager:
         self.entry = Entry(
             id=str(uuid4()),
             name=name,
+            description=description,
             args=' '.join(sys.argv),
             date_created=int(datetime.now().timestamp()),
             local_results_path=self.config.results_path,

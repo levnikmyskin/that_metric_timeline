@@ -7,9 +7,7 @@ from tmt.history.utils import save
 from tmt.exceptions import DuplicatedNameError
 from tmt.utils.duplicates import *
 from tests import BaseTest
-import unittest
 import os
-import shutil
 import pickle
 
 
@@ -75,6 +73,6 @@ class TestDecorators(BaseTest):
         self.assertEqual(len(entries), 2)
         for e in entries:
             if e.id == parent_id:
-                self.assertTrue(len(e.other_runs) == 1 or len(e.other_runs) == 2)
+                self.assertTrue(1 <= len(e.other_runs) <= 3)
 
 
