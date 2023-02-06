@@ -6,9 +6,8 @@ from tmt.info import __version__
 import typing
 import json
 
-
-
 Timestamp = NewType('Timestamp', int)
+
 
 @dataclass
 class BaseJsonDataclass(ABC):
@@ -49,7 +48,9 @@ class BaseJsonDataclass(ABC):
             else:
                 return container(BaseJsonDataclass.__solve_type(arg, 'l', {'l': e}) for e in d.get(key))
         else:
-            raise ValueError('There might be a Tuple or some kind of container which is not a list somewhere in the models. This is not supported yet')
+            raise ValueError(
+                'There might be a Tuple or some kind of container which is not a list somewhere in the models. This '
+                'is not supported yet')
 
     @staticmethod
     def init_subclass(subcls, key: str, kvs: Dict):
@@ -87,8 +88,11 @@ class Entry(BaseJsonDataclass):
     date_created: Timestamp
     local_results_path: str
     local_snapshot_path: str = ""
-    date_saved: Optional[Timestamp]  = None
+    date_saved: Optional[Timestamp] = None
     metrics: List[Metric] = field(default_factory=list)
     other_runs: List[Entry] = field(default_factory=list)
     results: List[Result] = field(default_factory=list)
     version: str = __version__
+
+    def short_str(self) -> str:
+        return f"Entry with id {self.id}, name {self.name}, timestamp {self.date_created}"

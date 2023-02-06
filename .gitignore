@@ -7,3 +7,4 @@ pyproject.toml
 examples/.tmt
 */**/*.lock
 docs/build
+TODO.md

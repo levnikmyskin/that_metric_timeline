@@ -35,7 +35,19 @@ class DbManager:
     @check_can_write
     def add_new_entries(self, entries: List[Entry]):
         self.db.addMany([e.to_dict() for e in entries])
-    
+
+    @check_can_write
+    def add_or_update_entry(self, entry: Entry):
+        if self.get_entry_by_id(entry.id):
+            self.db.updateByQuery({"id": entry.id}, entry.to_dict())
+        else:
+            self.db.add(entry.to_dict())
+
+    @check_can_write
+    def update_entries(self, entries: List[Entry]):
+        for entry in entries:
+            self.db.updateByQuery({"id": entry.id}, entry.to_dict())
+
     @check_can_write
     def delete_entry(self, entry: Entry) -> bool:
         with self.db.lock:
@@ -50,12 +62,16 @@ class DbManager:
                         return True
         return False
 
+    @check_can_write
+    def delete_all(self):
+        self.db.deleteAll()
+
     def get_entry_by_id(self, id: str) -> Optional[Entry]:
-        if (e := self.db.getByQuery({"id": id})): 
+        if e := self.db.getByQuery({"id": id}):
             return Entry.from_dict(e[0])
 
     def get_entry_by_exact_name(self, name: str) -> Optional[Entry]:
-        if (e := self.db.getByQuery({'name': name})):
+        if e := self.db.getByQuery({'name': name}):
             if len(e) > 1:
                 warnings.warn(f'Found {len(e)} entries for name {name}. Returning the first one.')
             return Entry.from_dict(e[0])

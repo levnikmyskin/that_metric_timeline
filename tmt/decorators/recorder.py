@@ -4,8 +4,10 @@ from tmt.storage.json_db import DbManager
 from tmt.storage.schema import Metric
 from datetime import datetime
 
+from tmt.utils.duplicates import DuplicateStrategy
 
-def recorder(name: str, config_path: Optional[str] = None, save_on_exception=False, allow_duplicate_names=False):
+
+def recorder(name: str, config_path: Optional[str] = None, save_on_exception=False, duplicate_strategy=DuplicateStrategy()):
     """
     One of the main ``tmt`` functions. This is a decorator which can be used to keep track of 
     experiments, saving metrics, results and taking a snapshot of the code at this moment in time.
@@ -33,12 +35,12 @@ def recorder(name: str, config_path: Optional[str] = None, save_on_exception=Fal
     :type config_path: Optional[str], optional
     :param save_on_exception: save everything (snapshot, metrics etc.) even if an exception happens. Defaults to False.
     :type save_on_exception: bool, optional
-    :param allow_duplicate_names: if ``True``, allow to save this experiment with name ``name`` even if a previous experiment with this name exists
-    :type allow_duplicate_names: bool, optional
+    :param duplicate_strategy: strategy to use when `name` already exists in the database. By default, throws `:py:exception:`tmt.exceptions.DuplicatedNameError`
+    :type duplicate_strategy: DuplicateStrategy, optional
     """
     def inner(func: Callable[..., Optional[Dict[str, float]]]):
         def wrapper(*args, **kwargs) -> Optional[Dict[str, float]]:
-            cm = ContextManager(name, config_path, allow_duplicate_names=allow_duplicate_names)
+            cm = ContextManager(name, config_path, duplicate_strategy=duplicate_strategy)
             context_manager.set(cm)
             db_manager = DbManager(cm.config.json_db_path)
             try:
@@ -48,14 +50,14 @@ def recorder(name: str, config_path: Optional[str] = None, save_on_exception=Fal
                         cm.entry.metrics.append(Metric(cm.entry.id, k, v))
                 cm.snap_manager.make_snapshot()
                 cm.entry.date_saved = int(datetime.now().timestamp())
-                db_manager.add_new_entries([cm.entry])
+                db_manager.add_or_update_entry(cm.root_entry)
                 return metrics
             except Exception as e:
                 if not save_on_exception:
                     raise e
                 cm.snap_manager.make_snapshot()
                 cm.entry.date_saved = int(datetime.now().timestamp())
-                db_manager.add_new_entries([cm.entry])
-            
+                db_manager.add_or_update_entry(cm.root_entry)
+
         return wrapper
     return inner

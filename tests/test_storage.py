@@ -1,9 +1,7 @@
-import unittest
-import os
 from tmt.storage.schema import *
 from tmt.storage.json_db import DbManager
+from tests import BaseTest
 from datetime import datetime
-from tmt.configs.parser import Configs
 
 
 @dataclass
@@ -21,16 +19,7 @@ class T2(BaseJsonDataclass):
     t2: typing.Optional[T1]
 
 
-class TestSchema(unittest.TestCase):
-
-    def setUp(self):
-        self.conf = Configs.from_config('tests/test_config.json')
-
-    def tearDown(self):
-        if os.path.exists(self.conf.json_db_path + '.lock'):
-            os.remove(self.conf.json_db_path + '.lock')
-        if os.path.exists(self.conf.json_db_path):
-            os.remove(self.conf.json_db_path) 
+class TestSchema(BaseTest):
 
     def test_from_dict(self):
         d = {'a': 3, 'b': [1,2,3], 'c': ['x', 'y', 'z'], 'd': 'd', 'e': [[1,2], [3,4]]}

@@ -7,39 +7,68 @@ from contextvars import ContextVar
 from tmt.configs.parser import Configs
 from typing import Optional, Any
 from tmt.exceptions import DuplicatedNameError
+from tmt.utils.duplicates import DuplicateStrategy, DuplicatePolicy
+from typing import List
 import os
 import sys
 import pickle
-
+import warnings
 
 context_manager: ContextVar[ContextManager] = ContextVar('context_manager', default=None)
 
 
 class ContextManager:
-    def __init__(self, name: str, config_path: Optional[str] = None, allow_duplicate_names=False):
+    def __init__(self, name: str, config_path: Optional[str] = None, duplicate_strategy=DuplicateStrategy()):
         if config_path:
             self.config = Configs.from_config(config_path)
         else:
             self.config = Configs.default_config()
-        if DbManager(self.config.json_db_path).get_entries_by_name(name) and not allow_duplicate_names:
-            raise DuplicatedNameError(f'one (or more) entry with name {name} already exists. Set `allow_duplicate_names=True` or change name (recommended)')
         self.entry = Entry(
-            id=str(uuid4()), 
-            name=name, 
-            args=' '.join(sys.argv), 
-            date_created=int(datetime.now().timestamp()), 
+            id=str(uuid4()),
+            name=name,
+            args=' '.join(sys.argv),
+            date_created=int(datetime.now().timestamp()),
             local_results_path=self.config.results_path,
-            )
+        )
+        self.duplicate_strat = duplicate_strategy
+        self.parent = DbManager(self.config.json_db_path).get_entries_by_name(name)
+        if self.parent:
+            if self.duplicate_strat.policy is DuplicatePolicy.DONT_ALLOW:
+                raise DuplicatedNameError(f'one (or more) entry with name {name} already exists. Set '
+                                          f'`duplicate_strategy` or change name (recommended)')
+            elif self.duplicate_strat.policy is DuplicatePolicy.AS_SUB_ENTRY:
+                if len(self.parent) > 1:
+                    parent_id = self.duplicate_strat.parent_id
+                    parent_dict = {e.id: e for e in self.parent}
+                    if not self.duplicate_strat.parent_id or self.duplicate_strat.parent_id not in parent_dict:
+                        parent = sorted(self.parent, key=lambda e: e.date_created, reverse=True)[0]
+                        warnings.warn(f'{len(self.parent)} entries already exist with this name and a '
+                                      f'valid DuplicateStrategy.parent_id was not specified. I will use {parent.short_str()} as '
+                                      f'the parent entry. See documentation for DuplicateStrategy.')
+                        parent_id = parent.id
+                    self.parent = parent_dict[parent_id]
+                else:
+                    self.parent = self.parent[0]
+                self.parent.other_runs.append(self.entry)
+            elif self.duplicate_strat.policy is DuplicatePolicy.AS_NEW_ENTRY:
+                self.parent = None
         self.snap_manager = self.config.init_snapshot_manager(self.entry.id)
         self.entry.local_snapshot_path = self.snap_manager.snapshot_dest
         os.makedirs(self.get_save_path(), exist_ok=True)
         self.last_saved_counter = 0
 
+    @property
+    def root_entry(self) -> Entry:
+        if self.parent and self.duplicate_strat.policy is DuplicatePolicy.AS_SUB_ENTRY:
+            return self.parent
+        return self.entry
+
     def save(self, obj: Any, name: str, allow_exist=False, extension='.pkl') -> str:
         path = self.get_save_path_with_name(name)
         if os.path.exists(path):
             if not allow_exist:
-                raise DuplicatedNameError(f'{self.get_save_path_with_name(name)} already exists and `allow_exist` is False. Specify another name to save this object')
+                raise DuplicatedNameError(f'{self.get_save_path_with_name(name)} already exists and `allow_exist` is '
+                                          f'False. Specify another name to save this object')
             else:
                 path = self.increment_last_saved_path(name)
         path += extension
