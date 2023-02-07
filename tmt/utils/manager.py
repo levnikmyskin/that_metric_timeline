@@ -1,3 +1,5 @@
+import warnings
+
 from tmt.storage.json_db import DbManager
 from tmt.storage.schema import Entry, Metric
 from tmt.configs.parser import Configs
@@ -94,7 +96,11 @@ class TmtManager:
         """
         for result in self.__entry_results(self.entry):
             with open(result.path, 'rb') as f:
-                yield result.name, pickle.load(f)
+                try:
+                    yield result.name, pickle.load(f)
+                except pickle.PickleError as p:
+                    warnings.warn(f'Object with name {result.name} is not unpickable. I will only return the path.\n{p}')
+                    yield result.name, result.path
 
     @entry_not_none
     def results_paths(self) -> Generator[Tuple[str, str], None, None]:
