@@ -76,11 +76,13 @@ class SearchLayout(BaseApp):
         ids = HSplit([Label(text='ID')])
         names = HSplit([Label(text='Name')])
         dates = HSplit([Label(text='Date created')])
-        self.results_box.children.append(VSplit([ids, names, dates]))
+        dates_saved = HSplit([Label(text='Date saved')])
+        self.results_box.children.append(VSplit([ids, names, dates, dates_saved]))
         for entry in entries:
             ids.children.append(to_container(FocusableText(entry.id, handler=partial(self.entry_select_handler, entry))))
             names.children.append(to_container(Label(text=entry.name)))
             dates.children.append(to_container(Label(text=date_formatter(entry.date_created))))
+            dates_saved.children.append(to_container(Label(text=date_formatter(float(entry.date_saved)) if entry.date_saved else "NA")))
 
     def _bottom_toolbar(self):
         toolbar = super()._bottom_toolbar()
