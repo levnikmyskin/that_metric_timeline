@@ -8,7 +8,6 @@ from tmt.configs.parser import Configs
 from typing import Optional, Any
 from tmt.exceptions import DuplicatedNameError
 from tmt.utils.duplicates import DuplicateStrategy, DuplicatePolicy
-from typing import List
 import os
 import sys
 import pickle

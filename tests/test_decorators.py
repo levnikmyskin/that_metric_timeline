@@ -1,5 +1,4 @@
 import warnings
-
 from tmt import tmt_recorder
 from tmt.storage.json_db import DbManager
 from tmt.history.context import context_manager, ContextManager, Configs
