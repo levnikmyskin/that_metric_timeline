@@ -31,14 +31,18 @@ def recorder(name: str, config_path: Optional[str] = None, save_on_exception=Fal
 
     :param name: name used to save this experiment in the database.
     :type name: str
-    :param config_path: if you want to use a custom configuration file, specify the path. Defaults to None. See :doc:`configuration` and :py:class:`tmt.configs.parser.Configs`
+    :param config_path: if you want to use a custom configuration file, specify the path. Defaults to None.
+        See :doc:`configuration` and :py:class:`tmt.configs.parser.Configs`
     :type config_path: Optional[str], optional
     :param save_on_exception: save everything (snapshot, metrics etc.) even if an exception happens. Defaults to False.
     :type save_on_exception: bool, optional
     :param description: experiment description. Can be as long as you wish.
     :type description: str, optional
-    :param duplicate_strategy: strategy to use when `name` already exists in the database. By default, throws `:py:exception:`tmt.exceptions.DuplicatedNameError`
+    :param duplicate_strategy: strategy to use when `name` already exists in the database. By default, set to
+        :py:attr:`tmt.utils.duplicates.DuplicateStrategy.DONT_ALLOW`.
     :type duplicate_strategy: DuplicateStrategy, optional
+    :raises tmt.exceptions.DuplicatedNameError: if `name` already exists in the database,
+        and :py:class:`tmt.utils.duplicates.DuplicateStrategy` is `DONT_ALLOW`.
     """
     def inner(func: Callable[..., Optional[Dict[str, float]]]):
         def wrapper(*args, **kwargs) -> Optional[Dict[str, float]]:

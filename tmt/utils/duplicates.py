@@ -6,17 +6,19 @@ class DuplicatePolicy(enum.Enum):
     """
     Enum class used to be used with :py:class:`tmt.utils.duplicates.DuplicateStrategy`.
     Possible choices are:
-    1. NO_ALLOW: do not allow duplicate names (i.e., throws :py:exception:`tmt.exceptions.DuplicatedNameError`);
-    2. AS_SUB_ENTRY: allow duplicate names, insert this new one as a "sub-entry" of the pre-existing one;
-    3. AS_NEW_ENTRY: allow duplicate names, create a completely new entry with the same name of the previous one (
-    entries are still identified by a unique UUID).
+
+    #. NO_ALLOW: do not allow duplicate names (i.e., throws :py:exc:`tmt.exceptions.DuplicatedNameError`);
+    #. AS_SUB_ENTRY: allow duplicate names, insert this new one as a "sub-entry" of the pre-existing one;
+    #. AS_NEW_ENTRY: allow duplicate names, create a completely new entry with the same name of the previous one
+       (entries are still identified by a unique UUID).
 
     Having an entry as a "sub-entry" of another one means that it will be saved in the `entry.others` field.
-    The sub-entry won't be directly searchable. Using a sub-entry is especially useful when running a task (e.g. experiment)
+    The sub-entry won't be directly searchable. Using a sub-entry is especially useful when running a task
+    (e.g. experiment)
     which is somehow connected to that entry and still part of that previous task.
 
     .. note::
-        When :py:method:`tmt.utils.manager.TmtManager.load_results` is called on an entry with a sub-entry, results
+        When :py:meth:`tmt.utils.manager.TmtManager.load_results` is called on an entry with a sub-entry, results
         for the sub-entry will be returned as well.
 
     .. note::

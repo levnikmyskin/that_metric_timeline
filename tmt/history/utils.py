@@ -37,8 +37,11 @@ def save(obj: Any, name: str, allow_exist=False, extension='.pkl',
 
     Should you need it, you can pass a `custom_save` function, in order to use another saving function instead of pickle.
     This can be done also if you want to save the object in another path.
-    **Example**:
+
+    **Example with custom saving function**:
+
     .. code-block:: python
+
         def my_save_fn(obj, path):
             np.save(path, obj)
 
@@ -56,8 +59,8 @@ def save(obj: Any, name: str, allow_exist=False, extension='.pkl',
     :param extension: the extension to save the file with, defaults to '.pkl'.
     :type extension: str, optional
     :param custom_save: a user-defined function to save the object (e.g., you can use `numpy.save`). The function will
-    receive the object to save and the file path. If you want to save to an alternative path, make sure to return this
-    path.
+        receive the object to save and the file path. If you want to save to an alternative path, make sure to return this
+        path.
     :type custom_save: Callable[[Any, str], Optional[str]], optional
     :raises ValueError: this is raised if the function is illegaly called outside a function decorated with :py:func:`tmt.decorators.recorder.recorder`
     :raises tmt.exceptions.DuplicatedNameError: if ``name`` already exists and ``allow_exist`` is False, this exception will be raised.

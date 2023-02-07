@@ -46,7 +46,34 @@ The decorated function might return a dictionary with the metrics the user wishe
         preds = lr.predict(x_te)
         return {'f1': f1_score(y_te, preds), 'accuracy': accuracy_score(y_te, preds)}
 
-The other key function ``tmt`` exposes is ``tmt_save`` (see :py:func:`tmt.history.utils.save`). This function should be called by the user to save any kind of pickable object, at any time.  
+.. note::
+    New in 0.1.8: ``tmt_recorder`` now accepts a ``description`` optional parameter.
+
+Changing experiments name dynamically
+"""""""""""""""""""""""""""""""""""""
+
+Should you want to set the experiment names dynamically (e.g., in a loop), you can do:
+
+.. code-block:: python
+
+    import sys
+    from tmt import tmt_recorder
+
+    def train_and_predict(...):
+        ...
+
+    if __name__ == '__main__':
+        for i in range(10):
+            decorated = tmt_recorder(name=f"some_experiment_{i}")(train_and_predict)
+            decorated(...)
+        # or maybe...
+        decorated = tmt_recorder(name=sys.argv[1])(train_and_predict)
+        decorated(...)
+
+Saving objects with TMT
+"""""""""""""""""""""""
+
+The other key function ``tmt`` exposes is ``tmt_save`` (see :py:func:`tmt.history.utils.save`). This function should be called by the user to save any kind of pickable object, at any time.
 If we wanted to save the predictions in the example above, we would do:
 
 .. code-block:: python
@@ -62,6 +89,44 @@ If we wanted to save the predictions in the example above, we would do:
         return {'f1': f1_score(y_te, preds), 'accuracy': accuracy_score(y_te, preds)}
 
 As you can see, we give a name to the saved object as well. This should make it easier to recognize what this pickled object refers to.
+
+Using a custom save function
+""""""""""""""""""""""""""""
+.. note::
+    New in version 0.1.8.
+
+If you wish, it is possible to define a custom save function that can:
+
+* Use something, such as numpy, to save the object, instead of pickle;
+* Change the saved path.
+
+Here's an example for both:
+
+.. code-block:: python
+
+    from tmt import tmt_recorder, tmt_save
+    import numpy as np
+
+    def my_save_fn(obj, path):
+        np.save(path, obj)
+
+    def save_fn_path(obj, path):
+        new_path = 'custom_path.npy'
+        np.save(new_path, obj)
+        return new_path
+
+    # ...
+    def train_and_predict(...):
+    # ...
+        tmt_save(preds, name='lr_predictions', custom_save=my_save_fn, extension='.npy')
+        tmt_save(preds, name='lr_predictions', custom_save=my_save_fn_path)
+
+.. warning::
+    When using ``numpy.save`` function, if the extension is not ``.npy``, the path will be
+    expanded by ``numpy`` to include that extension. This can bring to ``tmt`` saving the path
+    without the ``.npy`` extension, thus making it unable to load the object. To avoid this,
+    remember to specify the ``.npy`` extension or to use your own custom path
+    (which includes the ``.npy``).
 
 .. _tmttui:
 

@@ -38,6 +38,21 @@ tmt.utils.manager module
       :return: path to the snapshot saved with this experiment.
       :rtype: str
 
+tmt.utils.duplicates module
+---------------------------
+
+.. automodule:: tmt.utils.duplicates
+    :show-inheritance:
+    :noindex:
+
+.. autoclass:: DuplicatePolicy
+   :members:
+   :show-inheritance:
+
+.. autoclass:: DuplicateStrategy
+   :members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
