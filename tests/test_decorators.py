@@ -74,4 +74,21 @@ class TestDecorators(BaseTest):
             if e.id == parent_id:
                 self.assertTrue(1 <= len(e.other_runs) <= 3)
 
+    def test_description(self):
+        def test_fn(_):
+            return returned_metrics
+        db_man = DbManager(self.conf.json_db_path)
+        db_man.delete_all()
+        desc = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        fn = tmt_recorder('test_exp', config_path='tests/test_config.json', description=desc)(test_fn)
+        _ = fn(None)
+        entry = context_manager.get().entry
+        db_man = DbManager(context_manager.get().config.json_db_path)
+        db_entry = db_man.get_entry_by_id(entry.id)
+        self.assertEqual(db_entry.description, desc)
 

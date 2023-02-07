@@ -5,7 +5,7 @@ from uuid import uuid4
 from datetime import datetime
 from contextvars import ContextVar
 from tmt.configs.parser import Configs
-from typing import Optional, Any
+from typing import Optional, Any, Callable
 from tmt.exceptions import DuplicatedNameError
 from tmt.utils.duplicates import DuplicateStrategy, DuplicatePolicy
 import os
@@ -63,7 +63,8 @@ class ContextManager:
             return self.parent
         return self.entry
 
-    def save(self, obj: Any, name: str, allow_exist=False, extension='.pkl') -> str:
+    def save(self, obj: Any, name: str, allow_exist=False, extension='.pkl',
+             custom_save: Optional[Callable[[Any, str], Optional[str]]] = None) -> str:
         path = self.get_save_path_with_name(name)
         if os.path.exists(path):
             if not allow_exist:
@@ -72,8 +73,12 @@ class ContextManager:
             else:
                 path = self.increment_last_saved_path(name)
         path += extension
-        with open(path, 'wb') as f:
-            pickle.dump(obj, f)
+        if custom_save is not None:
+            custom_path = custom_save(obj, path)
+            path = custom_path if custom_path is not None else path
+        else:
+            with open(path, 'wb') as f:
+                pickle.dump(obj, f)
         self.entry.results.append(Result(self.entry.id, name, path))
         return path
 
