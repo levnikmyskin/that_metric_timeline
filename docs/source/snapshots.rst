@@ -1,7 +1,7 @@
 Snapshots
 *********
 
-How do ``tmt`` save snapshots?
+How does ``tmt`` save snapshots?
 ==============================
 
 Every time you track an experiment with ``tmt_recorder`` (:py:func:`tmt.decorators.recorder.recorder`), a code snapshot backup will be saved (by default in ``.tmt/snapshots``). This means that: 
