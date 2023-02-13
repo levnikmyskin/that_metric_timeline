@@ -8,7 +8,7 @@ Every time you track an experiment with ``tmt_recorder`` (:py:func:`tmt.decorato
 
  - the first time you use the library in your project, a simple copy of your project is made (by default, this is the current working directory (*cwd*) from which you launch the experiment); 
  - subsequent backups will only copy new and different files, while hard-linking all other files. This limits the space taken on your disk; 
- - by default, the library will look for a ``.gitignore`` file in your *cwd* and ignore (i.e., not copy) all files listed in there (the `PathSpec <https://python-path-specification.readthedocs.io/en/latest/readme.html>`_) library is used for gitignore parsing;
+ - by default, the library will look for a ``.gitignore`` file in your *cwd* and ignore (i.e., not copy) all files listed in there (the `PathSpec <https://python-path-specification.readthedocs.io/en/latest/readme.html>`_ library is used for gitignore parsing);
  - a symlink pointing to the last snapshot taken is created (and updated everytime) in ``.tmt/snapshots/last``.  
 
 You can change the default paths by using a :doc:`configuration` file.
